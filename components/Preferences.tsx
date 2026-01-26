@@ -1,6 +1,6 @@
 import { createProfileStyles } from "@/assets/styles/profile.styles";
 import useTheme from "@/hooks/useTheme";
-import { Ionicons } from "@expo/vector-icons";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import { Switch, Text, View } from "react-native";
