@@ -43,7 +43,14 @@ export default function Index() {
           </View>
           {/* Earth */}
           <Animated.View style={{ flex: 1 }}>
-            <Canvas camera={{ fov: GLOBE_CONFIG.CAMERA_FOV }}>
+            <Canvas
+              camera={{
+                fov: GLOBE_CONFIG.CAMERA.FOV,
+                near: GLOBE_CONFIG.CAMERA.NEAR,
+                far: GLOBE_CONFIG.CAMERA.FAR,
+                position: GLOBE_CONFIG.CAMERA.POSITION,
+              }}
+            >
               <GlobeScene
                 rotationX={rotationX}
                 rotationY={rotationY}
