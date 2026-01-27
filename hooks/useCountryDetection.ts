@@ -1,6 +1,7 @@
 import { COUNTRIES } from "@/data/countries";
 import { vector3ToLatLon } from "@/utils/coordinates";
 import { findCountryAtCoordinates } from "@/utils/countryDetection";
+import { logger } from "@/utils/logger";
 import { useCallback } from "react";
 import { Alert } from "react-native";
 import * as THREE from "three";
@@ -10,7 +11,7 @@ export const useCountryDetection = () => {
     // Convertit le point 3D en lat/lon
     const { lat, lon } = vector3ToLatLon(intersectionPoint);
 
-    console.log(
+    logger.debug(
       `🌍 Tap détecté : lat=${lat.toFixed(2)}°, lon=${lon.toFixed(2)}°`,
     );
 

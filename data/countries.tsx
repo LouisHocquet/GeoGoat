@@ -1,10 +1,4 @@
-export type Country = {
-  id: string;
-  name: string;
-  capital: string;
-  lat: number;
-  lon: number;
-};
+import { Country } from "@/types/country";
 
 export const COUNTRIES: Country[] = [
   {
