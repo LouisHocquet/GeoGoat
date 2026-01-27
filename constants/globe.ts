@@ -7,7 +7,12 @@ export const GLOBE_CONFIG = {
   SEGMENTS_HEIGHT: 64,
 
   // Caméra
-  CAMERA_FOV: 64, // ✅ Ajouté
+  CAMERA: {
+    FOV: 64,
+    NEAR: 0.1, // Distance minimale de rendu
+    FAR: 1000, // Distance maximale de rendu
+    POSITION: [0, 0, 5] as [number, number, number],
+  },
 
   // Limites de rotation
   MAX_ROTATION_X: Math.PI / 2, // 90° (évite le flip)
