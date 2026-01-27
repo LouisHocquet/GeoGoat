@@ -6,7 +6,6 @@ import { useGlobeGestures } from "@/hooks/useGlobeGestures";
 import useTheme from "@/hooks/useTheme";
 import { Canvas } from "@react-three/fiber/native";
 import { LinearGradient } from "expo-linear-gradient";
-import { Text, View } from "react-native";
 import { GestureDetector } from "react-native-gesture-handler";
 import Animated, { useSharedValue } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -29,21 +28,22 @@ export default function Index() {
   const { handleGlobeTap } = useCountryDetection();
 
   return (
-    <GestureDetector gesture={composedGestures}>
-      <LinearGradient
-        colors={colors.gradients.background}
-        style={homeStyles.container}
-      >
-        <SafeAreaView style={homeStyles.safeArea}>
-          {/* HEADER */}
-          <View style={homeStyles.header}>
+    <LinearGradient
+      colors={colors.gradients.background}
+      style={homeStyles.container}
+    >
+      <SafeAreaView style={homeStyles.safeArea}>
+        {/* HEADER */}
+        {/* <View style={homeStyles.header}>
             <View style={homeStyles.titleContainer}>
               <Text style={homeStyles.title}>GeoGoat 🐐</Text>
             </View>
-          </View>
-          {/* Earth */}
+          </View> */}
+        {/* Earth */}
+        <GestureDetector gesture={composedGestures}>
           <Animated.View style={{ flex: 1 }}>
             <Canvas
+              // style={{ backgroundColor: "#f00" }}
               camera={{
                 fov: GLOBE_CONFIG.CAMERA.FOV,
                 near: GLOBE_CONFIG.CAMERA.NEAR,
@@ -59,8 +59,8 @@ export default function Index() {
               />
             </Canvas>
           </Animated.View>
-        </SafeAreaView>
-      </LinearGradient>
-    </GestureDetector>
+        </GestureDetector>
+      </SafeAreaView>
+    </LinearGradient>
   );
 }
