@@ -1,6 +1,7 @@
 import { createHomeStyles } from "@/assets/styles/home.styles";
 import { GlobeScene } from "@/components/GlobeScene";
 import { GLOBE_CONFIG } from "@/constants/globe";
+import { useCountryDetection } from "@/hooks/useCountryDetection";
 import { useGlobeGestures } from "@/hooks/useGlobeGestures";
 import useTheme from "@/hooks/useTheme";
 import { Canvas } from "@react-three/fiber/native";
@@ -9,12 +10,6 @@ import { Text, View } from "react-native";
 import { GestureDetector } from "react-native-gesture-handler";
 import Animated, { useSharedValue } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-// type GlobeProps = {
-//   rotationX: SharedValue<number>;
-//   rotationY: SharedValue<number>;
-//   scale: SharedValue<number>;
-// };
 
 export default function Index() {
   const { colors } = useTheme();
@@ -26,7 +21,12 @@ export default function Index() {
   const scale = useSharedValue(1);
 
   // Gestures
-  const composedGestures = useGlobeGestures({ rotationX, rotationY, scale });
+  const composedGestures = useGlobeGestures({
+    rotationX,
+    rotationY,
+    scale,
+  });
+  const { handleGlobeTap } = useCountryDetection();
 
   return (
     <GestureDetector gesture={composedGestures}>
@@ -55,6 +55,7 @@ export default function Index() {
                 rotationX={rotationX}
                 rotationY={rotationY}
                 scale={scale}
+                onGlobeTap={handleGlobeTap}
               />
             </Canvas>
           </Animated.View>
