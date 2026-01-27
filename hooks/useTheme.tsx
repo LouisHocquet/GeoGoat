@@ -1,5 +1,11 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 export interface ColorScheme {
   bg: string;
@@ -35,7 +41,7 @@ const lightColors: ColorScheme = {
   text: "#1e293b",
   textMuted: "#64748b",
   border: "#e2e8f0",
-  primary: "#3b82f6",
+  primary: "#63C132",
   success: "#10b981",
   warning: "#f59e0b",
   danger: "#ef4444",
@@ -43,7 +49,7 @@ const lightColors: ColorScheme = {
   gradients: {
     background: ["#f8fafc", "#e2e8f0"],
     surface: ["#ffffff", "#f8fafc"],
-    primary: ["#3b82f6", "#1d4ed8"],
+    primary: ["#63C132", "#63C132"],
     success: ["#10b981", "#059669"],
     warning: ["#f59e0b", "#d97706"],
     danger: ["#ef4444", "#dc2626"],
@@ -58,20 +64,20 @@ const lightColors: ColorScheme = {
 };
 
 const darkColors: ColorScheme = {
-  bg: "#0f172a",
-  surface: "#1e293b",
+  bg: "#04162A",
+  surface: "#07274B",
   text: "#f1f5f9",
   textMuted: "#94a3b8",
   border: "#334155",
-  primary: "#60a5fa",
+  primary: "#63C132",
   success: "#34d399",
   warning: "#fbbf24",
   danger: "#f87171",
   shadow: "#000000",
   gradients: {
-    background: ["#0f172a", "#1e293b"],
-    surface: ["#1e293b", "#334155"],
-    primary: ["#3b82f6", "#1d4ed8"],
+    background: ["#04162A", "#04162A"],
+    surface: ["#07274B", "#07274B"],
+    primary: ["#63C132", "#63C132"],
     success: ["#10b981", "#059669"],
     warning: ["#f59e0b", "#d97706"],
     danger: ["#ef4444", "#dc2626"],
@@ -86,12 +92,12 @@ const darkColors: ColorScheme = {
 };
 
 interface ThemeContextType {
-  isDarkMode:boolean;
+  isDarkMode: boolean;
   toggleDarkMode: () => void;
-  colors:ColorScheme
+  colors: ColorScheme;
 }
 
-const ThemeContext = createContext<undefined | ThemeContextType>(undefined)
+const ThemeContext = createContext<undefined | ThemeContextType>(undefined);
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -119,12 +125,12 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
 };
 
 const useTheme = () => {
-  const context = useContext(ThemeContext)
+  const context = useContext(ThemeContext);
   if (context === undefined) {
-    throw new Error("useTheme must be used within a ThemeProvider")
+    throw new Error("useTheme must be used within a ThemeProvider");
   }
 
   return context;
-}
+};
 
-export default useTheme
+export default useTheme;

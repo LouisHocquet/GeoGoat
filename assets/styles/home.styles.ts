@@ -24,6 +24,7 @@ export const createHomeStyles = (colors: ColorScheme) => {
       paddingHorizontal: 24,
       paddingVertical: 32,
       paddingBottom: 24,
+      backgroundColor: "red",
     },
     titleContainer: {
       flexDirection: "row",

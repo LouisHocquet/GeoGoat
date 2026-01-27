@@ -8,7 +8,7 @@ export const GLOBE_CONFIG = {
 
   // Caméra
   CAMERA: {
-    FOV: 64,
+    FOV: 75,
     NEAR: 0.1, // Distance minimale de rendu
     FAR: 1000, // Distance maximale de rendu
     POSITION: [0, 0, 5] as [number, number, number],
