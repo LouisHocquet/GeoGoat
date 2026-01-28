@@ -4,12 +4,7 @@ import { countryToPoints3D } from "@/utils/geoJSON";
 import React, { useMemo } from "react";
 import * as THREE from "three";
 
-type OverlayState =
-  | "hidden"
-  | "preview"
-  | "correct"
-  | "incorrect"
-  | "undefined";
+type OverlayState = "hidden" | "preview" | "correct" | "incorrect";
 
 type CountryOverlayProps = {
   country: CountryGeoJSON;
@@ -17,17 +12,17 @@ type CountryOverlayProps = {
 };
 
 const COLORS = {
-  preview: "#6B7FFF",
-  correct: "#4CAF50",
-  incorrect: "#F44336",
-  undefined: "",
+  hidden: "#000000",
+  preview: "#6B7FFF", // Bleu (comme ta maquette)
+  correct: "#4CAF50", // Vert
+  incorrect: "#F44336", // Rouge
 };
 
 const OPACITY = {
   preview: 0.4,
   correct: 0.6,
   incorrect: 0.6,
-  undefined: 0,
+  hidden: 0,
 };
 
 export const CountryOverlay = ({ country, state }: CountryOverlayProps) => {

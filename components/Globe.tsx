@@ -13,7 +13,7 @@ type GlobeComponentsProps = GlobeProps & {
   onTap?: (point: THREE.Vector3) => void;
   showBorders?: boolean;
   selectedCountry?: Country | null;
-  overlayState?: "hidden" | "preview" | "correct" | "incorrect" | "undefined";
+  overlayState?: "hidden" | "preview" | "correct" | "incorrect";
 };
 
 export const Globe = ({
@@ -23,7 +23,7 @@ export const Globe = ({
   onTap,
   showBorders = true,
   selectedCountry,
-  overlayState = "undefined",
+  overlayState = "hidden",
 }: GlobeComponentsProps) => {
   const meshRef = useRef<THREE.Mesh>(null);
 
