@@ -1,5 +1,9 @@
 # GeoGoat - Contexte Technique
 
+## Produit final
+Je crée un jeu de géographie qui sera une application mobile pour iOS et Android. Le jeu se veut à la fois éducatif et fun. Les utilisateurs pourront apprendre les localisations de pays, les drapeaux et les capitales en essayant de les trouver sur le globe terrestre. La DA de l'application sera intuitive et moderne, à mi-chemin entre une appli éducative et un jeu vidéo. Le globe terrestre notamment, sera l'élément visuel le plus important. Il doit être beau (semi réaliste stylisé) et les interactions avec lui impeccables (zoom, fly to, click, rotation avec le doigt ...)
+Je proposerai une logique Freemium.
+
 ## Stack & Infra
 - React Native + Expo
 - React Three Fiber
