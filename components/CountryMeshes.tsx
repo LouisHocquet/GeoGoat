@@ -139,7 +139,5 @@ export function CountryMeshes({
 
   if (loading) return null;
 
-  console.log("CountryMeshes rendering:", countryMeshes?.length, "meshes");
-  console.log("First mesh:", countryMeshes?.[0]);
   return <group name="country-meshes">{countryMeshes}</group>;
 }

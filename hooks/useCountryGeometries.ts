@@ -41,7 +41,7 @@ export function useCountryGeometries() {
         }
 
         return {
-          id: properties.ISO_A2 || properties.name,
+          id: properties.iso_a2 || properties.name,
           name: properties.name,
           coordinates,
           type: geometry.type,
