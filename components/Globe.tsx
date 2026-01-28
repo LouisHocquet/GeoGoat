@@ -1,12 +1,11 @@
 import { GLOBE_CONFIG } from "@/constants/globe";
-import { COUNTRIES_GEOJSON } from "@/data/countriesGeoJSON";
 import { Country } from "@/types/country";
 import { GlobeProps } from "@/types/globe";
 import { useTexture } from "@react-three/drei/native";
-import { ThreeEvent, useFrame } from "@react-three/fiber/native";
+import { useFrame } from "@react-three/fiber/native";
 import React, { useRef } from "react";
 import * as THREE from "three";
-import { CountryBorder } from "./CountryBorder";
+import { CountryMeshes } from "./CountryMeshes";
 
 type GlobeComponentsProps = GlobeProps & {
   onTap?: (point: THREE.Vector3) => void;
@@ -36,28 +35,35 @@ export const Globe = ({
     }
   });
 
-  // Handler pour les taps sur le globe
-  const handlePointerDown = (event: ThreeEvent<PointerEvent>) => {
-    if (onTap && event.point) {
-      // Le point d'intersection est déjà dans l'espace local du mesh
-      // On doit juste l'ajuster avec les rotations actuelles
-      const rotatedPoint = event.point.clone();
-
-      // Crée une matrice de rotation inverse
-      const rotationMatrix = new THREE.Matrix4();
-      rotationMatrix.makeRotationFromEuler(
-        new THREE.Euler(rotationX.value, rotationY.value, 0),
-      );
-      rotationMatrix.invert();
-
-      rotatedPoint.applyMatrix4(rotationMatrix);
-
-      onTap(rotatedPoint);
-    }
+  // Dans votre composant Globe, ajoutez cette fonction de callback
+  const handleCountryClick = (countryId: string, countryName: string) => {
+    console.log("Country clicked:", countryName, countryId);
+    // TODO: Implémenter la logique d'overlay ici plus tard
   };
 
+  // // Handler pour les taps sur le globe
+  // const handlePointerDown = (event: ThreeEvent<PointerEvent>) => {
+  //   if (onTap && event.point) {
+  //     // Le point d'intersection est déjà dans l'espace local du mesh
+  //     // On doit juste l'ajuster avec les rotations actuelles
+  //     const rotatedPoint = event.point.clone();
+
+  //     // Crée une matrice de rotation inverse
+  //     const rotationMatrix = new THREE.Matrix4();
+  //     rotationMatrix.makeRotationFromEuler(
+  //       new THREE.Euler(rotationX.value, rotationY.value, 0),
+  //     );
+  //     rotationMatrix.invert();
+
+  //     rotatedPoint.applyMatrix4(rotationMatrix);
+
+  //     onTap(rotatedPoint);
+  //   }
+  // };
+
   return (
-    <mesh ref={meshRef} onPointerDown={handlePointerDown}>
+    // <mesh ref={meshRef} onPointerDown={handlePointerDown}>
+    <mesh ref={meshRef} onPointerDown={() => null}>
       <sphereGeometry
         args={[
           GLOBE_CONFIG.RADIUS,
@@ -75,7 +81,11 @@ export const Globe = ({
           )
         }
       />
-      {/* ✅ Frontières comme enfants du mesh */}
+      <CountryMeshes
+        onCountryClick={handleCountryClick}
+        debug={false} // Mettez true pour voir les wireframes
+      />
+      {/* ✅ Frontières comme enfants du mesh
       {showBorders &&
         COUNTRIES_GEOJSON.map((country) => (
           <CountryBorder
@@ -84,7 +94,7 @@ export const Globe = ({
             color="#ffffff"
             opacity={0.3}
           />
-        ))}
+        ))} */}
     </mesh>
   );
 };

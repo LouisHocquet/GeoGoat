@@ -1,0 +1,145 @@
+import React, { useMemo } from "react";
+import * as THREE from "three";
+import { GLOBE_CONFIG } from "../constants/globe";
+import { useCountryGeometries } from "../hooks/useCountryGeometries";
+import { coordinatesToPositions } from "../utils/geoUtils";
+// @ts-ignore
+import earcut from "earcut";
+
+interface CountryMeshesProps {
+  onCountryClick?: (countryId: string, countryName: string) => void;
+  debug?: boolean;
+}
+
+export function CountryMeshes({
+  onCountryClick,
+  debug = false,
+}: CountryMeshesProps) {
+  const { countries, loading } = useCountryGeometries();
+
+  const countryMeshes = useMemo(() => {
+    if (loading) return null;
+
+    const allMeshes: React.ReactElement[] = [];
+
+    for (const country of countries) {
+      for (
+        let polygonIndex = 0;
+        polygonIndex < country.coordinates.length;
+        polygonIndex++
+      ) {
+        const polygonCoords = country.coordinates[polygonIndex];
+        const outerRing = polygonCoords[0];
+
+        if (!outerRing || outerRing.length < 3) continue;
+
+        // Convert all coordinates to 3D positions on sphere
+        const positions = coordinatesToPositions(
+          outerRing as number[][],
+          GLOBE_CONFIG.RADIUS,
+        );
+
+        if (positions.length < 3) continue;
+
+        // Subdivide long edges to follow sphere curvature
+        const subdividedPositions: [number, number, number][] = [];
+        for (let i = 0; i < positions.length; i++) {
+          const current = positions[i];
+          const next = positions[(i + 1) % positions.length];
+
+          subdividedPositions.push(current);
+
+          // Calculate distance between points
+          const [x1, y1, z1] = current;
+          const [x2, y2, z2] = next;
+          const dist = Math.sqrt(
+            (x2 - x1) ** 2 + (y2 - y1) ** 2 + (z2 - z1) ** 2,
+          );
+
+          // If edge is long, add midpoint on sphere surface
+          if (dist > 1.5) {
+            const midX = (x1 + x2) / 2;
+            const midY = (y1 + y2) / 2;
+            const midZ = (z1 + z2) / 2;
+            const len = Math.sqrt(midX ** 2 + midY ** 2 + midZ ** 2);
+            subdividedPositions.push([
+              (midX / len) * GLOBE_CONFIG.RADIUS,
+              (midY / len) * GLOBE_CONFIG.RADIUS,
+              (midZ / len) * GLOBE_CONFIG.RADIUS,
+            ]);
+          }
+        }
+
+        // Calculate centroid for tangent plane
+        const centroid = new THREE.Vector3();
+        subdividedPositions.forEach(([x, y, z]) => {
+          centroid.add(new THREE.Vector3(x, y, z));
+        });
+        centroid.divideScalar(subdividedPositions.length).normalize();
+
+        // Create local coordinate system (tangent plane)
+        const normal = centroid.clone();
+        const up = new THREE.Vector3(0, 1, 0);
+        const tangent = new THREE.Vector3()
+          .crossVectors(up, normal)
+          .normalize();
+        const bitangent = new THREE.Vector3().crossVectors(normal, tangent);
+
+        // Project 3D positions onto 2D tangent plane
+        const vertices: number[] = [];
+        const flatCoords: number[] = [];
+
+        subdividedPositions.forEach(([x, y, z]) => {
+          const point = new THREE.Vector3(x, y, z);
+          // Push slightly outward from globe surface
+          const offset = 1.02; // 1% outward
+          vertices.push(x * offset, y * offset, z * offset);
+
+          // Project onto tangent plane
+          const u = point.dot(tangent);
+          const v = point.dot(bitangent);
+          flatCoords.push(u, v);
+        });
+
+        // Triangulate using earcut
+        const indices = earcut(flatCoords, null, 2);
+
+        // Create BufferGeometry
+        const geometry = new THREE.BufferGeometry();
+        geometry.setAttribute(
+          "position",
+          new THREE.Float32BufferAttribute(vertices, 3),
+        );
+        geometry.setIndex(indices);
+        geometry.computeVertexNormals();
+
+        const key = `${country.id}-${polygonIndex}`;
+
+        allMeshes.push(
+          <mesh
+            key={key}
+            geometry={geometry}
+            userData={{ countryId: country.id, countryName: country.name }}
+            onClick={(e) => {
+              e.stopPropagation();
+              onCountryClick?.(country.id, country.name);
+            }}
+          >
+            <meshBasicMaterial
+              color={debug ? "#00ff00" : "#ff0000"}
+              side={THREE.DoubleSide}
+            />
+          </mesh>,
+        );
+      }
+    }
+
+    return allMeshes;
+  }, [countries, loading, onCountryClick, debug]);
+
+  if (loading) return null;
+
+  console.log("CountryMeshes rendering:", countryMeshes?.length, "meshes");
+  console.log("First mesh:", countryMeshes?.[0]);
+  return <group name="country-meshes">{countryMeshes}</group>;
+}
