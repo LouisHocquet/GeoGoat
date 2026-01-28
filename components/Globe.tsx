@@ -1,12 +1,19 @@
 import { GLOBE_CONFIG } from "@/constants/globe";
+import { COUNTRIES_GEOJSON } from "@/data/countriesGeoJSON";
+import { Country } from "@/types/country";
 import { GlobeProps } from "@/types/globe";
 import { useTexture } from "@react-three/drei/native";
 import { ThreeEvent, useFrame } from "@react-three/fiber/native";
 import React, { useRef } from "react";
 import * as THREE from "three";
+import { CountryBorder } from "./CountryBorder";
+import { CountryOverlay } from "./CountryOverlay";
 
 type GlobeComponentsProps = GlobeProps & {
   onTap?: (point: THREE.Vector3) => void;
+  showBorders?: boolean;
+  selectedCountry?: Country | null;
+  overlayState?: "hidden" | "preview" | "correct" | "incorrect" | "undefined";
 };
 
 export const Globe = ({
@@ -14,6 +21,9 @@ export const Globe = ({
   rotationY,
   scale,
   onTap,
+  showBorders = true,
+  selectedCountry,
+  overlayState = "undefined",
 }: GlobeComponentsProps) => {
   const meshRef = useRef<THREE.Mesh>(null);
 
@@ -69,6 +79,23 @@ export const Globe = ({
           )
         }
       />
+      {/* ✅ Frontières comme enfants du mesh */}
+      {showBorders &&
+        COUNTRIES_GEOJSON.map((country) => (
+          <CountryBorder
+            key={country.id}
+            country={country}
+            color="#ffffff"
+            opacity={0.3}
+          />
+        ))}
+      {/* ✅ Overlay comme enfants du mesh */}
+      {selectedCountry && (
+        <CountryOverlay
+          country={COUNTRIES_GEOJSON.find((c) => c.id === selectedCountry.id)!}
+          state={overlayState}
+        />
+      )}
     </mesh>
   );
 };

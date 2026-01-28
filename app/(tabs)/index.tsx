@@ -56,6 +56,8 @@ export default function Index() {
                 rotationY={rotationY}
                 scale={scale}
                 onGlobeTap={handleGlobeTap}
+                // selectedCountry={gameState.selectedCountry} // ✅
+                // overlayState={getOverlayState()} // ✅
               />
             </Canvas>
           </Animated.View>
