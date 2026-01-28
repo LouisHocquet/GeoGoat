@@ -12,7 +12,7 @@ Je proposerai une logique Freemium.
 ## Fonctionnalités implémentées
 - ✅ Globe 3D rotatif
 - ✅ Gestion zoom
-- ✅ Création d'un jeu de données de test (3 pays)
+- ✅ Création d'un jeu de données de test (Brésil, France et Chine)
 - ✅ Conversion données GeoJSON en points 3D
 - ✅ Déclenchement d'une alerte au tap sur un pays
 - ✅ Affichage des frontières
