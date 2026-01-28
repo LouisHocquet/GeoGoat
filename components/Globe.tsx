@@ -7,13 +7,11 @@ import { ThreeEvent, useFrame } from "@react-three/fiber/native";
 import React, { useRef } from "react";
 import * as THREE from "three";
 import { CountryBorder } from "./CountryBorder";
-import { CountryOverlay } from "./CountryOverlay";
 
 type GlobeComponentsProps = GlobeProps & {
   onTap?: (point: THREE.Vector3) => void;
   showBorders?: boolean;
   selectedCountry?: Country | null;
-  overlayState?: "hidden" | "preview" | "correct" | "incorrect";
 };
 
 export const Globe = ({
@@ -22,8 +20,6 @@ export const Globe = ({
   scale,
   onTap,
   showBorders = true,
-  selectedCountry,
-  overlayState = "hidden",
 }: GlobeComponentsProps) => {
   const meshRef = useRef<THREE.Mesh>(null);
 
@@ -89,13 +85,6 @@ export const Globe = ({
             opacity={0.3}
           />
         ))}
-      {/* ✅ Overlay comme enfants du mesh */}
-      {selectedCountry && (
-        <CountryOverlay
-          country={COUNTRIES_GEOJSON.find((c) => c.id === selectedCountry.id)!}
-          state={overlayState}
-        />
-      )}
     </mesh>
   );
 };
