@@ -1,7 +1,6 @@
 import { createHomeStyles } from "@/assets/styles/home.styles";
 import { GlobeScene } from "@/components/GlobeScene";
 import { GLOBE_CONFIG } from "@/constants/globe";
-import { useCountryDetection } from "@/hooks/useCountryDetection";
 import { useGlobeGestures } from "@/hooks/useGlobeGestures";
 import useTheme from "@/hooks/useTheme";
 import { Canvas } from "@react-three/fiber/native";
@@ -25,7 +24,6 @@ export default function Index() {
     rotationY,
     scale,
   });
-  const { handleGlobeTap } = useCountryDetection();
 
   return (
     <LinearGradient
@@ -47,7 +45,6 @@ export default function Index() {
                 rotationX={rotationX}
                 rotationY={rotationY}
                 scale={scale}
-                onGlobeTap={handleGlobeTap}
               />
             </Canvas>
           </Animated.View>
