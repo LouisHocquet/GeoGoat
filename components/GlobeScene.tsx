@@ -1,19 +1,9 @@
 import { GLOBE_CONFIG } from "@/constants/globe";
 import { GlobeProps } from "@/types/globe";
 import React from "react";
-import * as THREE from "three";
 import { Globe } from "./Globe";
 
-type GlobeSceneProps = GlobeProps & {
-  onGlobeTap?: (point: THREE.Vector3) => void;
-};
-
-export const GlobeScene = ({
-  rotationX,
-  rotationY,
-  scale,
-  onGlobeTap,
-}: GlobeSceneProps) => {
+export const GlobeScene = ({ rotationX, rotationY, scale }: GlobeProps) => {
   return (
     <>
       <ambientLight intensity={GLOBE_CONFIG.AMBIENT_LIGHT_INTENSITY} />
@@ -21,12 +11,7 @@ export const GlobeScene = ({
         position={GLOBE_CONFIG.DIRECTIONAL_LIGHT_POSITION}
         intensity={GLOBE_CONFIG.DIRECTIONAL_LIGHT_INTENSITY}
       />
-      <Globe
-        rotationX={rotationX}
-        rotationY={rotationY}
-        scale={scale}
-        onTap={onGlobeTap}
-      />
+      <Globe rotationX={rotationX} rotationY={rotationY} scale={scale} />
     </>
   );
 };
