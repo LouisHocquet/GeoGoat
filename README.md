@@ -25,6 +25,8 @@
 
 ## Prochaine étape
 - ⏭️ Implémenter le système d'overlay (pouvoir colorer un pays dans une couleur donnée au tap par exemple)
+
+## Étapes suivantes
 - ⏭️ Mettre en place les étapes de déroulement du jeu
 - ⏭️ Créer les composants d'interface prompt (indiquer le pays à trouver) et validation (confirmer la sélection du pays)
 - ⏭️ Intégrer le tout ensemble pour avoir la boucle de jeu en place : réaliser un quiz sur les pays de test
