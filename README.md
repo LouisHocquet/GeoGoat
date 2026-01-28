@@ -1,50 +1,39 @@
-# Welcome to your Expo app 👋
+# GeoGoat - Contexte Technique
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## Produit final
+Je crée un jeu de géographie qui sera une application mobile pour iOS et Android. Le jeu se veut à la fois éducatif et fun. Les utilisateurs pourront apprendre les localisations de pays, les drapeaux et les capitales en essayant de les trouver sur le globe terrestre. La DA de l'application sera intuitive et moderne, à mi-chemin entre une appli éducative et un jeu vidéo. Le globe terrestre notamment, sera l'élément visuel le plus important. Il doit être beau (semi réaliste stylisé) et les interactions avec lui impeccables (zoom, fly to, click, rotation avec le doigt ...)
+Je proposerai une logique Freemium.
 
-## Get started
+## Objectif
+Publier l'application sur iOS (brique de paiement incluse) début Mars et monter en compétence le React Native en parallèle.
 
-1. Install dependencies
+## Stack & Infra
+- React Native + Expo
+- React Three Fiber
+- Repo: https://github.com/LouisHocquet/GeoGoat
 
-   ```bash
-   npm install
-   ```
+## Fonctionnalités implémentées
+- ✅ Globe 3D rotatif
+- ✅ Gestion zoom
+- ✅ Création d'un jeu de données de test (Brésil, France et Chine)
+- ✅ Conversion données GeoJSON en points 3D
+- ✅ Déclenchement d'une alerte au tap sur un pays
+- ✅ Affichage des frontières
 
-2. Start the app
+## Architecture clés
+- GlobeScene : src/components/GlobeScene.tsx
+- Globe: src/components/Globe.tsx
+- Rotation et zoom: useGesture hook
+- Tap : useCountryDetection hook
+- Données pays: src/data/countries.json
 
-   ```bash
-   npx expo start
-   ```
+## Problèmes connus
 
-In the output, you'll find options to open the app in a
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Prochaine étape
+- ⏭️ Implémenter le système d'overlay (pouvoir colorer un pays dans une couleur donnée au tap par exemple)
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Étapes suivantes
+- ⏭️ Mettre en place les étapes de déroulement du jeu
+- ⏭️ Créer les composants d'interface prompt (indiquer le pays à trouver) et validation (confirmer la sélection du pays)
+- ⏭️ Intégrer le tout ensemble pour avoir la boucle de jeu en place : réaliser un quiz sur les pays de test
