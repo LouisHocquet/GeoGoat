@@ -9,6 +9,8 @@ import earcut from "earcut";
 interface CountryMeshesProps {
   onCountryClick?: (countryId: string, countryName: string) => void;
   selectedCountryId?: string | null;
+  feedbackCountryId?: string | null;
+  isCorrect?: boolean | null;
   highlightColor?: string;
   debug?: boolean;
 }
@@ -16,6 +18,8 @@ interface CountryMeshesProps {
 export function CountryMeshes({
   onCountryClick,
   selectedCountryId,
+  feedbackCountryId,
+  isCorrect,
   highlightColor = "#4A90E2",
   debug = false,
 }: CountryMeshesProps) {
@@ -119,6 +123,21 @@ export function CountryMeshes({
 
         const key = `${country.id}-${polygonIndex}`;
         const isSelected = country.id === selectedCountryId;
+        const isFeedback = country.id === feedbackCountryId;
+
+        // Determine color based on state (priority order matters!)
+        let meshColor = debug ? "#00ff00" : "#ffffff";
+        let meshOpacity = debug ? 0.5 : 0;
+
+        if (isSelected && !isFeedback) {
+          // Show selection (blue) - only if NOT in feedback mode
+          meshColor = highlightColor;
+          meshOpacity = 0.6;
+        } else if (isFeedback) {
+          // Show feedback (green for correct, red for incorrect)
+          meshColor = isCorrect ? "#22C55E" : "#EF4444";
+          meshOpacity = 0.7;
+        }
 
         allMeshes.push(
           <mesh
@@ -133,10 +152,8 @@ export function CountryMeshes({
           >
             <meshBasicMaterial
               transparent
-              opacity={isSelected ? 0.6 : debug ? 0.5 : 0}
-              color={
-                isSelected ? highlightColor : debug ? "#00ff00" : "#ffffff"
-              }
+              opacity={meshOpacity}
+              color={meshColor}
               side={THREE.FrontSide}
               polygonOffset
               polygonOffsetFactor={-2}
@@ -153,6 +170,8 @@ export function CountryMeshes({
     loading,
     onCountryClick,
     selectedCountryId,
+    feedbackCountryId,
+    isCorrect,
     highlightColor,
     debug,
   ]);

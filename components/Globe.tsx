@@ -16,7 +16,9 @@ export const Globe = ({
   scale,
   onCountryClick,
   selectedCountryId,
-  highlightColor,
+  // highlightColor = "#4A90E2",
+  feedbackCountryId,
+  isCorrect,
 }: GlobeProps) => {
   const meshRef = useRef<THREE.Mesh>(null);
 
@@ -66,8 +68,10 @@ export const Globe = ({
       <CountryMeshes
         onCountryClick={onCountryClick}
         selectedCountryId={selectedCountryId}
-        highlightColor={highlightColor}
+        // highlightColor={highlightColor}
         debug={false}
+        feedbackCountryId={feedbackCountryId}
+        isCorrect={isCorrect}
       />
     </group>
     // <mesh ref={meshRef} onPointerDown={() => null}>
