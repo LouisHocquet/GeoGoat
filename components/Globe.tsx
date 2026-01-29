@@ -3,6 +3,7 @@ import { GlobeProps } from "@/types/globe";
 import { useTexture } from "@react-three/drei/native";
 import { useFrame } from "@react-three/fiber/native";
 import React, { useRef } from "react";
+import { Alert } from "react-native";
 import * as THREE from "three";
 import { CountryMeshes } from "./CountryMeshes";
 
@@ -29,6 +30,9 @@ export const Globe = ({ rotationX, rotationY, scale }: GlobeProps) => {
   // Dans votre composant Globe, ajoutez cette fonction de callback
   const handleCountryClick = (countryId: string, countryName: string) => {
     console.log("Country clicked:", countryName, countryId);
+    Alert.alert("Pays clické", `Vous avez cliqué sur ${countryName} !`, [
+      { text: "OK" },
+    ]);
   };
 
   return (
@@ -49,6 +53,7 @@ export const Globe = ({ rotationX, rotationY, scale }: GlobeProps) => {
             GLOBE_CONFIG.NORMAL_SCALE,
           )
         }
+        // depthWrite={false}
       />
       <CountryMeshes
         onCountryClick={handleCountryClick}
