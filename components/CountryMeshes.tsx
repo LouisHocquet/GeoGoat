@@ -8,11 +8,15 @@ import earcut from "earcut";
 
 interface CountryMeshesProps {
   onCountryClick?: (countryId: string, countryName: string) => void;
+  selectedCountryId?: string | null;
+  highlightColor?: string;
   debug?: boolean;
 }
 
 export function CountryMeshes({
   onCountryClick,
+  selectedCountryId,
+  highlightColor = "#4A90E2",
   debug = false,
 }: CountryMeshesProps) {
   const { countries, loading } = useCountryGeometries();
@@ -92,7 +96,7 @@ export function CountryMeshes({
         subdividedPositions.forEach(([x, y, z]) => {
           const point = new THREE.Vector3(x, y, z);
           // Push outward from globe surface
-          const offset = 1.01; // 0.5% outward
+          const offset = 1.01;
           vertices.push(x * offset, y * offset, z * offset);
 
           // Project onto tangent plane
@@ -114,6 +118,7 @@ export function CountryMeshes({
         geometry.computeVertexNormals();
 
         const key = `${country.id}-${polygonIndex}`;
+        const isSelected = country.id === selectedCountryId;
 
         allMeshes.push(
           <mesh
@@ -127,7 +132,11 @@ export function CountryMeshes({
             }}
           >
             <meshBasicMaterial
-              color={debug ? "#00ff00" : "#ff0000"}
+              transparent
+              opacity={isSelected ? 0.6 : debug ? 0.5 : 0}
+              color={
+                isSelected ? highlightColor : debug ? "#00ff00" : "#ffffff"
+              }
               side={THREE.FrontSide}
               polygonOffset
               polygonOffsetFactor={-2}
@@ -139,7 +148,14 @@ export function CountryMeshes({
     }
 
     return allMeshes;
-  }, [countries, loading, onCountryClick, debug]);
+  }, [
+    countries,
+    loading,
+    onCountryClick,
+    selectedCountryId,
+    highlightColor,
+    debug,
+  ]);
 
   if (loading) return null;
 
