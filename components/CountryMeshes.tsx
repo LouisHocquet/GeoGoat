@@ -57,7 +57,7 @@ export function CountryMeshes({
           );
 
           // If edge is long, add midpoint on sphere surface
-          if (dist > 1.5) {
+          if (dist > 0.5) {
             const midX = (x1 + x2) / 2;
             const midY = (y1 + y2) / 2;
             const midZ = (z1 + z2) / 2;
@@ -91,8 +91,8 @@ export function CountryMeshes({
 
         subdividedPositions.forEach(([x, y, z]) => {
           const point = new THREE.Vector3(x, y, z);
-          // Push slightly outward from globe surface
-          const offset = 1.02; // 1% outward
+          // Push outward from globe surface
+          const offset = 1.01; // 0.5% outward
           vertices.push(x * offset, y * offset, z * offset);
 
           // Project onto tangent plane
@@ -119,6 +119,7 @@ export function CountryMeshes({
           <mesh
             key={key}
             geometry={geometry}
+            renderOrder={1}
             userData={{ countryId: country.id, countryName: country.name }}
             onClick={(e) => {
               e.stopPropagation();
@@ -127,7 +128,10 @@ export function CountryMeshes({
           >
             <meshBasicMaterial
               color={debug ? "#00ff00" : "#ff0000"}
-              side={THREE.DoubleSide}
+              side={THREE.FrontSide}
+              polygonOffset
+              polygonOffsetFactor={-2}
+              polygonOffsetUnits={-2}
             />
           </mesh>,
         );
