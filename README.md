@@ -8,32 +8,36 @@ Je proposerai une logique Freemium.
 Publier l'application sur iOS (brique de paiement incluse) début Mars et monter en compétence le React Native en parallèle.
 
 ## Stack & Infra
-- React Native + Expo
-- React Three Fiber
+- Framework : React Native + Expo
+- 3D : React Three Fiber
 - Repo: https://github.com/LouisHocquet/GeoGoat
 
 ## Fonctionnalités implémentées
 - ✅ Globe 3D rotatif
+- ✅ Gestion du theme et du Darkmode
 - ✅ Gestion zoom
-- ✅ Création d'un jeu de données de test (Brésil, France et Chine)
-- ✅ Conversion données GeoJSON en points 3D
+- ✅ Création d'un jeu de données GeoJson de test de 10 pays 
+- ✅ Affichage des meshs pays sur le Globe à partir du GeoJSON
 - ✅ Déclenchement d'une alerte au tap sur un pays
-- ✅ Affichage des frontières
 
 ## Architecture clés
 - GlobeScene : src/components/GlobeScene.tsx
 - Globe: src/components/Globe.tsx
 - Rotation et zoom: useGesture hook
-- Tap : useCountryDetection hook
+- Création des mesh pays + gestion du tap : CountryMeshes.tsx
 - Données pays: src/data/countries.json
 
 ## Problèmes connus
-
+- z-fighting entre les mesh pays et le globe
 
 ## Prochaine étape
-- ⏭️ Implémenter le système d'overlay (pouvoir colorer un pays dans une couleur donnée au tap par exemple)
+- ⏭️ Créer les composants d'interface prompt (indiquer le pays à trouver) et validation (confirmer la sélection du pays)
+- ⏭️ Mettre en place les étapes de déroulement du jeu
+- ⏭️ Intégrer le tout ensemble pour avoir la boucle de jeu en place : réaliser un quiz sur les pays de test
 
 ## Étapes suivantes
-- ⏭️ Mettre en place les étapes de déroulement du jeu
-- ⏭️ Créer les composants d'interface prompt (indiquer le pays à trouver) et validation (confirmer la sélection du pays)
-- ⏭️ Intégrer le tout ensemble pour avoir la boucle de jeu en place : réaliser un quiz sur les pays de test
+- ⏭️ Affichage des frontières
+- ⏭️ Afficher les résultats du quizz à l'utilisateur
+- ⏭️ Stocker dans la mémoire du téléphone les pays maîtrisés, les pays ratés par l'utilisateur
+- ⏭️ Afficher sur le globe l'avancement d'apprentissage de l'utilisateur par un code couleur sur les mesh pays
+- ⏭️ Résoudre le z-fighting globe / Mesh Pays
