@@ -10,7 +10,9 @@ export const GlobeScene = ({
   scale,
   onCountryClick,
   selectedCountryId,
-  highlightColor,
+  // highlightColor = "#4A90E2",
+  feedbackCountryId,
+  isCorrect,
 }: GlobeProps) => {
   return (
     <Canvas
@@ -32,7 +34,9 @@ export const GlobeScene = ({
         scale={scale}
         onCountryClick={onCountryClick}
         selectedCountryId={selectedCountryId}
-        highlightColor={highlightColor}
+        // highlightColor={highlightColor}
+        feedbackCountryId={feedbackCountryId}
+        isCorrect={isCorrect}
       />
     </Canvas>
   );

@@ -6,7 +6,9 @@ export type GlobeProps = {
   scale: SharedValue<number>;
   onCountryClick?: (countryId: string, countryName: string) => void;
   selectedCountryId?: string | null;
-  highlightColor?: string;
+  // highlightColor?: string;
+  feedbackCountryId: string | null;
+  isCorrect?: boolean | null;
 };
 
 export type GlobeGestureConfig = {

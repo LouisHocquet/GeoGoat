@@ -1,6 +1,8 @@
 import { createHomeStyles } from "@/assets/styles/home.styles";
 import { QuestionBottomSheet } from "@/components/game/QuestionBottomSheet";
 import { QuestionOverlay } from "@/components/game/QuestionOverlay";
+import { QuitButton } from "@/components/game/QuitButton";
+import QuizResult from "@/components/game/QuizResult";
 import { GlobeScene } from "@/components/GlobeScene";
 import { useCountryGeometries } from "@/hooks/useCountryGeometries";
 import { useGameState } from "@/hooks/useGameState";
@@ -28,7 +30,7 @@ export default function Index() {
   });
 
   const { countries, loading } = useCountryGeometries();
-  const gameState = useGameState(countries, 10);
+  const gameState = useGameState(countries, 3);
 
   const {
     gamePhase,
@@ -38,6 +40,7 @@ export default function Index() {
     score,
     currentRound,
     totalRounds,
+    feedbackCountryId,
     startQuiz,
     selectCountry,
     validateAnswer,
@@ -68,14 +71,15 @@ export default function Index() {
             scale={scale}
             onCountryClick={handleCountryClick}
             selectedCountryId={selectedCountry?.id || null}
-            highlightColor="#4A90E2"
+            feedbackCountryId={feedbackCountryId}
+            isCorrect={isCorrect}
           />
         </Animated.View>
       </GestureDetector>
 
       {/* Start button when idle */}
       {gamePhase === "idle" && !loading && (
-        <View style={styles.startContainer}>
+        <View style={styles.startContainer} pointerEvents="box-none">
           <TouchableOpacity style={styles.startButton} onPress={startQuiz}>
             <Text style={styles.startButtonText}>Commencer le quiz</Text>
           </TouchableOpacity>
@@ -91,6 +95,11 @@ export default function Index() {
         />
       )}
 
+      {/* Quit button */}
+      {(gamePhase === "question" ||
+        gamePhase === "confirming" ||
+        gamePhase === "feedback") && <QuitButton onQuit={backToMenu} />}
+
       {/* Bottom sheet for confirmation and feedback */}
       <QuestionBottomSheet
         gamePhase={gamePhase}
@@ -101,35 +110,10 @@ export default function Index() {
         onNext={nextRound}
         onCancel={cancelSelection}
       />
+
+      <QuizResult gamePhase={gamePhase} score={score} onBackMenu={backToMenu} />
     </View>
   );
-
-  // <LinearGradient
-  //   colors={colors.gradients.background}
-  //   style={homeStyles.container}
-  // >
-  //   <SafeAreaView style={homeStyles.safeArea}>
-  //     <GestureDetector gesture={composedGestures}>
-  //       <Animated.View style={{ flex: 1 }}>
-  //         <Canvas
-  //           camera={{
-  //             fov: GLOBE_CONFIG.CAMERA.FOV,
-  //             near: GLOBE_CONFIG.CAMERA.NEAR,
-  //             far: GLOBE_CONFIG.CAMERA.FAR,
-  //             position: GLOBE_CONFIG.CAMERA.POSITION,
-  //           }}
-  //         >
-  //           <GlobeScene
-  //             rotationX={rotationX}
-  //             rotationY={rotationY}
-  //             scale={scale}
-  //           />
-  //         </Canvas>
-  //       </Animated.View>
-  //     </GestureDetector>
-  //   </SafeAreaView>
-  // </LinearGradient>
-  // );
 }
 const styles = StyleSheet.create({
   container: {
@@ -138,10 +122,10 @@ const styles = StyleSheet.create({
   },
   startContainer: {
     position: "absolute",
-    top: 0,
+    // top: 0,
     left: 0,
     right: 0,
-    bottom: 0,
+    bottom: 24,
     justifyContent: "center",
     alignItems: "center",
     zIndex: 5,

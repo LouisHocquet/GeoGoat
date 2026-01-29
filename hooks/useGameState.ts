@@ -16,11 +16,13 @@ interface GameState {
   score: number;
   totalRounds: number;
   currentRound: number;
+  quizCountries: CountryGeometry[];
+  feedbackCountryId: string | null;
 }
 
 export function useGameState(
   countries: CountryGeometry[],
-  roundsPerGame: number = 10,
+  roundsPerGame: number = 5,
 ) {
   const [state, setState] = useState<GameState>({
     gamePhase: "idle",
@@ -30,23 +32,34 @@ export function useGameState(
     score: 0,
     totalRounds: roundsPerGame,
     currentRound: 0,
+    quizCountries: [],
+    feedbackCountryId: null,
   });
 
   // Start a new quiz
   const startQuiz = useCallback(() => {
     if (countries.length === 0) return;
 
-    const randomCountry =
-      countries[Math.floor(Math.random() * countries.length)];
+    // Shuffle and pick countries for this quiz
+    const shuffled = [...countries].sort(() => Math.random() - 0.5);
+    const quizCountries = shuffled.slice(
+      0,
+      Math.min(roundsPerGame, countries.length),
+    );
+
+    // const randomCountry =
+    //   countries[Math.floor(Math.random() * countries.length)];
 
     setState({
       gamePhase: "question",
-      targetCountry: randomCountry,
+      targetCountry: quizCountries[0],
       selectedCountry: null,
       isCorrect: null,
       score: 0,
       totalRounds: roundsPerGame,
       currentRound: 1,
+      quizCountries: quizCountries,
+      feedbackCountryId: null,
     });
   }, [countries, roundsPerGame]);
 
@@ -56,6 +69,7 @@ export function useGameState(
       ...prev,
       gamePhase: "confirming",
       selectedCountry: country,
+      feedbackCountryId: null,
     }));
   }, []);
 
@@ -71,6 +85,7 @@ export function useGameState(
         gamePhase: "feedback",
         isCorrect: correct,
         score: correct ? prev.score + 1 : prev.score,
+        feedbackCountryId: prev.selectedCountry.id, // Show feedback on selected country
       };
     });
   }, []);
@@ -84,23 +99,26 @@ export function useGameState(
         return {
           ...prev,
           gamePhase: "result",
+          feedbackCountryId: null,
+          selectedCountry: null,
+          isCorrect: null,
         };
       }
 
-      // Pick new random country
-      const randomCountry =
-        countries[Math.floor(Math.random() * countries.length)];
+      // Get next country from quiz list
+      const nextCountry = prev.quizCountries[prev.currentRound];
 
       return {
         ...prev,
         gamePhase: "question",
-        targetCountry: randomCountry,
+        targetCountry: nextCountry,
         selectedCountry: null,
         isCorrect: null,
         currentRound: prev.currentRound + 1,
+        feedbackCountryId: null,
       };
     });
-  }, [countries]);
+  }, []);
 
   // Return to idle/menu
   const backToMenu = useCallback(() => {
@@ -112,6 +130,8 @@ export function useGameState(
       score: 0,
       totalRounds: roundsPerGame,
       currentRound: 0,
+      quizCountries: [],
+      feedbackCountryId: null,
     });
   }, [roundsPerGame]);
 
