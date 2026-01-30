@@ -6,10 +6,6 @@ import React, { useRef } from "react";
 import * as THREE from "three";
 import { CountryMeshes } from "./CountryMeshes";
 
-// type GlobeComponentsProps = GlobeProps & {
-//   onTap?: (point: THREE.Vector3) => void;
-// };
-
 export const Globe = ({
   rotationX,
   rotationY,
