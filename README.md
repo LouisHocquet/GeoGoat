@@ -13,31 +13,41 @@ Publier l'application sur iOS (brique de paiement incluse) début Mars et monter
 - Repo: https://github.com/LouisHocquet/GeoGoat
 
 ## Fonctionnalités implémentées
-- ✅ Globe 3D rotatif
+- ✅ Globe 3D utilisé par les pages index et quiz
 - ✅ Gestion du theme et du Darkmode
-- ✅ Gestion zoom
-- ✅ Création d'un jeu de données GeoJson de test de 10 pays 
+- ✅ Gestion zoom / pan du globe
+- ✅ Création d'un jeu de données GeoJson de test de 10 pays
+- ✅ Boucle de Jeu Basique : prompt pays à trouver > Tap sur un mesh pays du globe > Confirmation > Feedback UI (correct/incorrect) > Affichage du résultat
 - ✅ Affichage des meshs pays sur le Globe à partir du GeoJSON
-- ✅ Déclenchement d'une alerte au tap sur un pays
 
 ## Architecture clés
+- Menu principal : index.tsx
+- Quiz : /quiz/[mode].tsx
 - GlobeScene : src/components/GlobeScene.tsx
 - Globe: src/components/Globe.tsx
 - Rotation et zoom: useGesture hook
 - Création des mesh pays + gestion du tap : CountryMeshes.tsx
 - Données pays: src/data/countries.json
+- Types définis dans le dossier src/types
 
 ## Problèmes connus
 - z-fighting entre les mesh pays et le globe
 
 ## Prochaine étape
-- ⏭️ Créer les composants d'interface prompt (indiquer le pays à trouver) et validation (confirmer la sélection du pays)
-- ⏭️ Mettre en place les étapes de déroulement du jeu
-- ⏭️ Intégrer le tout ensemble pour avoir la boucle de jeu en place : réaliser un quiz sur les pays de test
+- ⏭️ Maîtriser ce qu'on a déjà codé en factorisant et comprenant useGlobeGesture et useGameState (cf LEARNING.md)
 
 ## Étapes suivantes
+- ⏭️ Déployer build sur TestFlight pour test interne sur mon iPhone
+- ⏭️ Affichage des frontières sur le globe
+- ⏭️ Intégrer tous les pays du monde
 - ⏭️ Affichage des frontières
 - ⏭️ Afficher les résultats du quizz à l'utilisateur
 - ⏭️ Stocker dans la mémoire du téléphone les pays maîtrisés, les pays ratés par l'utilisateur
 - ⏭️ Afficher sur le globe l'avancement d'apprentissage de l'utilisateur par un code couleur sur les mesh pays
 - ⏭️ Résoudre le z-fighting globe / Mesh Pays
+- ⏭️ Ajouter le mode de jeu capitales du monde
+- ⏭️ Ajouter le mode de jeu drapeaux
+- ⏭️ Permettre la sélection du mode de jeu
+- ⏭️ Mettre en place le système de paiement
+- ⏭️ Conditionner l'accès à certains modes de jeu aux utilisateurs premium
+- ⏭️ Déployer l'application sur l'appstore
