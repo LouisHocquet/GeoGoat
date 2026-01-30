@@ -7,7 +7,7 @@ export type GlobeProps = {
   onCountryClick?: (countryId: string, countryName: string) => void;
   selectedCountryId?: string | null;
   // highlightColor?: string;
-  feedbackCountryId: string | null;
+  feedbackCountryId?: string | null;
   isCorrect?: boolean | null;
 };
 

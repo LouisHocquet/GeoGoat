@@ -1,11 +1,5 @@
 import { createHomeStyles } from "@/assets/styles/home.styles";
-import { QuestionBottomSheet } from "@/components/game/QuestionBottomSheet";
-import { QuestionOverlay } from "@/components/game/QuestionOverlay";
-import { QuitButton } from "@/components/game/QuitButton";
-import QuizResult from "@/components/game/QuizResult";
 import { GlobeScene } from "@/components/GlobeScene";
-import { useCountryGeometries } from "@/hooks/useCountryGeometries";
-import { useGameState } from "@/hooks/useGameState";
 import { useGlobeGestures } from "@/hooks/useGlobeGestures";
 import useTheme from "@/hooks/useTheme";
 import { useRouter } from "expo-router";
@@ -32,36 +26,6 @@ export default function Index() {
     scale,
   });
 
-  const { countries, loading } = useCountryGeometries();
-  const gameState = useGameState(countries, 3);
-
-  const {
-    gamePhase,
-    targetCountry,
-    selectedCountry,
-    isCorrect,
-    score,
-    currentRound,
-    totalRounds,
-    feedbackCountryId,
-    startQuiz,
-    selectCountry,
-    validateAnswer,
-    nextRound,
-    backToMenu,
-    cancelSelection,
-  } = gameState;
-
-  // Handle country click from globe
-  const handleCountryClick = (countryId: string, countryName: string) => {
-    if (gamePhase !== "question" && gamePhase !== "confirming") return;
-
-    const country = countries.find((c) => c.id === countryId);
-    if (country) {
-      selectCountry(country);
-    }
-  };
-
   return (
     <View style={styles.container}>
       <StatusBar style="light" />
@@ -72,52 +36,20 @@ export default function Index() {
             rotationX={rotationX}
             rotationY={rotationY}
             scale={scale}
-            onCountryClick={handleCountryClick}
-            selectedCountryId={selectedCountry?.id || null}
-            feedbackCountryId={feedbackCountryId}
-            isCorrect={isCorrect}
           />
         </Animated.View>
       </GestureDetector>
 
       {/* Start button when idle */}
-      {gamePhase === "idle" && !loading && (
-        <View style={styles.startContainer} pointerEvents="box-none">
-          <TouchableOpacity
-            style={styles.startButton}
-            onPress={() => router.navigate("../quiz/country")}
-          >
-            <Text style={styles.startButtonText}>Commencer le quiz</Text>
-          </TouchableOpacity>
-        </View>
-      )}
 
-      {/* Question overlay */}
-      {gamePhase !== "idle" && gamePhase !== "result" && targetCountry && (
-        <QuestionOverlay
-          countryName={targetCountry.name}
-          currentRound={currentRound}
-          totalRounds={totalRounds}
-        />
-      )}
-
-      {/* Quit button */}
-      {(gamePhase === "question" ||
-        gamePhase === "confirming" ||
-        gamePhase === "feedback") && <QuitButton onQuit={backToMenu} />}
-
-      {/* Bottom sheet for confirmation and feedback */}
-      <QuestionBottomSheet
-        gamePhase={gamePhase}
-        selectedCountryName={selectedCountry?.name}
-        isCorrect={isCorrect || false}
-        correctCountryName={targetCountry?.name}
-        onValidate={validateAnswer}
-        onNext={nextRound}
-        onCancel={cancelSelection}
-      />
-
-      <QuizResult gamePhase={gamePhase} score={score} onBackMenu={backToMenu} />
+      <View style={styles.startContainer} pointerEvents="box-none">
+        <TouchableOpacity
+          style={styles.startButton}
+          onPress={() => router.push("../quiz/country")}
+        >
+          <Text style={styles.startButtonText}>Commencer le quiz</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
