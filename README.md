@@ -35,9 +35,10 @@ Publier l'application sur iOS (brique de paiement incluse) début Mars et monter
 
 ## Prochaine étape
 - ⏭️ Maîtriser ce qu'on a déjà codé en factorisant et comprenant useGlobeGesture et useGameState (cf LEARNING.md)
+- ⏭️ Déployer build sur TestFlight pour test interne sur mon iPhone
 
 ## Étapes suivantes
-- ⏭️ Déployer build sur TestFlight pour test interne sur mon iPhone
+- ⏭️ Faire une passe UI sur quiz[mode] pour correspondre parfaitement aux maquettes
 - ⏭️ Affichage des frontières sur le globe
 - ⏭️ Intégrer tous les pays du monde
 - ⏭️ Affichage des frontières
