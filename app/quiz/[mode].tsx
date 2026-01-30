@@ -10,13 +10,12 @@ import { useGlobeGestures } from "@/hooks/useGlobeGestures";
 import useTheme from "@/hooks/useTheme";
 import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useEffect } from "react";
+import { StyleSheet, View } from "react-native";
 import { GestureDetector } from "react-native-gesture-handler";
 import Animated, { useSharedValue } from "react-native-reanimated";
 
 export default function Index() {
-  const router = useRouter();
-
   const { colors } = useTheme();
   const homeStyles = createHomeStyles(colors);
 
@@ -44,13 +43,26 @@ export default function Index() {
     currentRound,
     totalRounds,
     feedbackCountryId,
-    startQuiz,
     selectCountry,
     validateAnswer,
     nextRound,
     backToMenu,
     cancelSelection,
+    startQuiz,
   } = gameState;
+
+  const router = useRouter();
+
+  const handleBackToMenu = () => {
+    backToMenu();
+    router.back();
+  };
+
+  useEffect(() => {
+    if (!loading && countries.length > 0) {
+      startQuiz();
+    }
+  }, [loading, countries, startQuiz]);
 
   // Handle country click from globe
   const handleCountryClick = (countryId: string, countryName: string) => {
@@ -80,18 +92,6 @@ export default function Index() {
         </Animated.View>
       </GestureDetector>
 
-      {/* Start button when idle */}
-      {gamePhase === "idle" && !loading && (
-        <View style={styles.startContainer} pointerEvents="box-none">
-          <TouchableOpacity
-            style={styles.startButton}
-            onPress={() => router.navigate("../quiz/country")}
-          >
-            <Text style={styles.startButtonText}>Commencer le quiz</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-
       {/* Question overlay */}
       {gamePhase !== "idle" && gamePhase !== "result" && targetCountry && (
         <QuestionOverlay
@@ -104,7 +104,7 @@ export default function Index() {
       {/* Quit button */}
       {(gamePhase === "question" ||
         gamePhase === "confirming" ||
-        gamePhase === "feedback") && <QuitButton onQuit={backToMenu} />}
+        gamePhase === "feedback") && <QuitButton onQuit={handleBackToMenu} />}
 
       {/* Bottom sheet for confirmation and feedback */}
       <QuestionBottomSheet
@@ -117,7 +117,11 @@ export default function Index() {
         onCancel={cancelSelection}
       />
 
-      <QuizResult gamePhase={gamePhase} score={score} onBackMenu={backToMenu} />
+      <QuizResult
+        gamePhase={gamePhase}
+        score={score}
+        onBackMenu={handleBackToMenu}
+      />
     </View>
   );
 }
@@ -128,28 +132,11 @@ const styles = StyleSheet.create({
   },
   startContainer: {
     position: "absolute",
-    // top: 0,
     left: 0,
     right: 0,
     bottom: 24,
     justifyContent: "center",
     alignItems: "center",
     zIndex: 5,
-  },
-  startButton: {
-    backgroundColor: "#4A90E2",
-    paddingHorizontal: 32,
-    paddingVertical: 16,
-    borderRadius: 12,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 8,
-  },
-  startButtonText: {
-    color: "#FFFFFF",
-    fontSize: 18,
-    fontWeight: "700",
   },
 });
